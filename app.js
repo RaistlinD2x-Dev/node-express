@@ -14,6 +14,9 @@ app.use(morgan('dev'));
 // to tell express to expect JSON
 app.use(express.json());
 
+// serving static file
+app.use(express.static(`${__dirname}/public`));
+
 // middleware
 // location matters, acts on all routes in current location
 app.use((req, res, next) => {
