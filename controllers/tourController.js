@@ -24,6 +24,17 @@ exports.checkID = (req, res, next, val) => {
   next();
 };
 
+// added chained middleware for post request validation
+exports.checkBody = (req, res, next) => {
+  if (!req.body.name || !req.body.price) {
+    return res.status(400).json({
+      status: 'fail',
+      message: 'Missing name or price.',
+    });
+  }
+  next();
+};
+
 // all functions written below were route handlers
 // these will be moved to other files later
 exports.getAllTours = (req, res) => {
