@@ -8,13 +8,21 @@ const app = express();
 app.use(express.json());
 
 // middleware
+// location matters, acts on all routes in current location
 app.use((req, res, next) => {
   console.log('Hello from the middleware');
   next();
 });
 
+// adds the requestTime property to request giving current modified time string
+app.use((req, res, next) => {
+  req.requestTime = new Date().toISOString();
+  next();
+});
+
 // top level code to load all data from the file in a synchronous
 // fashion so it is always available globally
+// also parsed file input as JSON data
 const tours = JSON.parse(
   fs.readFileSync(
     `${__dirname}/dev-data/data/tours-simple.json`
@@ -24,8 +32,12 @@ const tours = JSON.parse(
 // all functions written below were route handlers
 // these will be moved to other files later
 const getAllTours = (req, res) => {
+  // tested req.requestTime and added to envelope here
+  console.log(req.requestTime);
+
   res.status(200).json({
     status: 'Success',
+    requestedAt: req.requestTime,
     results: tours.length,
     data: {
       tours,
