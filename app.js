@@ -10,7 +10,10 @@ const app = express();
 
 // setup morgan Middleware
 // adds useful route response data in console
-app.use(morgan('dev'));
+if (process.env.NODE_ENV === 'development') {
+  app.use(morgan('dev'));
+}
+
 // to tell express to expect JSON
 app.use(express.json());
 
