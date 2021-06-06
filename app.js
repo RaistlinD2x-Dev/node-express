@@ -14,8 +14,6 @@ app.use(morgan('dev'));
 // to tell express to expect JSON
 app.use(express.json());
 
-// 1) Middleware
-
 // middleware
 // location matters, acts on all routes in current location
 app.use((req, res, next) => {

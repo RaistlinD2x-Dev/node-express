@@ -11,6 +11,19 @@ const tours = JSON.parse(
 
 // 2) Route Handlers
 
+// custom middleware route handler
+// refactored out all internal checks from route handlers
+exports.checkID = (req, res, next, val) => {
+  console.log(`Tour ID is: ${val}`);
+  if (parseInt(req.params.id) > tours.length) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Invalid ID',
+    });
+  }
+  next();
+};
+
 // all functions written below were route handlers
 // these will be moved to other files later
 exports.getAllTours = (req, res) => {
@@ -31,14 +44,6 @@ exports.getTour = (req, res) => {
   //   console.log(req.params);
   const id = parseInt(req.params.id);
   const tour = tours.find((el) => el.id === id);
-
-  //   if (id > tours.length) {
-  if (!tour) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
 
   res.status(200).json({
     status: 'Success',
@@ -73,13 +78,6 @@ exports.createTour = (req, res) => {
 };
 
 exports.updateTour = (req, res) => {
-  if (parseInt(req.params.id) > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
-
   res.status(200).json({
     status: 'success',
     data: {
@@ -89,13 +87,6 @@ exports.updateTour = (req, res) => {
 };
 
 exports.deleteTour = (req, res) => {
-  if (parseInt(req.params.id) > tours.length) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Invalid ID',
-    });
-  }
-
   res.status(204).json({
     status: 'success',
     data: null,
